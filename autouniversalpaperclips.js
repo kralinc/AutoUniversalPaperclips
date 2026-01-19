@@ -120,10 +120,17 @@ function doInvestments() {
         qs("#btnInvest").click();
     }
 
-    //Keep piling money into investments until you can withdraw $10,000,000. That's the most money you need at one time.
-    //Maintain a pool of $30,000,000 to keep making money after withdrawing.
-    if (secTotal > 30000000 && bankroll > 10000000) {
-        qs("#btnWithdraw").click();
+    if (project40b.flag) {
+        //This needs $64,000,000
+        if (secTotal > 30000000 && bankroll > 70000000) {
+            investWithdraw();
+        }
+    }else {
+        //Keep piling money into investments until you can withdraw $10,000,000. That's the most money you need at one time.
+        //Maintain a pool of $30,000,000 to keep making money after withdrawing.
+        if (secTotal > 30000000 && bankroll > 10000000) {
+            investWithdraw();
+        }
     }
 
     qs("#btnImproveInvestments").click();
@@ -163,7 +170,9 @@ function buyBuildings() {
     var powerDemand = dDemand + fDemand;
     var powerCap = batteryLevel * batterySize;
 
+    //Buy factories if you can buy them with 5 seconds of waiting
     var prioritizeFactory = factoryCost < clipRate * 5;
+    //Buy solar farms if power demand is >90% of power supply
     var prioritizeFarm = (powerDemand >= powerSupply - (powerSupply * 0.1));
 
     if ((prioritizeFarm && unusedClips > farmCost) || availableMatter == 0) {
@@ -307,3 +316,4 @@ function fillStatTargetsSequentially() {
 }
 
 let autoclicker = setInterval(runAutoclicker, 75);
+
